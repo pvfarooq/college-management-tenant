@@ -1,0 +1,55 @@
+name: Unit testing
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.12]
+
+    env:
+      DJANGO_SETTINGS_MODULE: clg_mgmt_tenant.settings.local
+      DEBUG: False
+      SECRET_KEY: a-random-secret-key
+      JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }
+      POSTGRES_DB: test_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+
+    services:
+      postgres_main:
+        image: postgres:15.0
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements/local.txt
+
+      - name: Run tests and coverage
+        run: |
+          coverage run manage.py test
+          coverage report
