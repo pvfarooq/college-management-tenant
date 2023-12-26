@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  django:
+    container_name: clg-mgmt-tenant-server
+    command: python manage.py runserver_plus
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+  db:
+    container_name: clg-mgmt-tenant-db
+    image: postgres:15.0-alpine
+    env_file:
+      - ./.envs/.local/.postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    restart: always
+
+volumes:
+  postgres_data:

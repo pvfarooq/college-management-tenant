@@ -1,0 +1,3 @@
+POSTGRES_USER=tenantuser
+POSTGRES_PASSWORD=zxdfGHJAS65
+POSTGRES_DB=clg-mgmt-tenant

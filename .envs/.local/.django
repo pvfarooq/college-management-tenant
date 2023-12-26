@@ -1,0 +1,5 @@
+SECRET_KEY='django-insecure-p65v!5fw&%=9u7je!r1rz#oj9-jk-a+r4kl7qp%$oejqz3zez6'
+DJANGO_SETTINGS_MODULE=clg_mgmt_tenant.settings.local
+DEBUG=True
+JWT_PRIVATE_KEY=.keys/private.pem
+JWT_PUBLIC_KEY=.keys/public.pem
