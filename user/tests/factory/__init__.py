@@ -1,1 +1,1 @@
-from .user import UserFactory, SuperUserFactory # noqa
+from .user import SuperUserFactory, UserFactory  # noqa

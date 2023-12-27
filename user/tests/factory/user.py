@@ -1,4 +1,5 @@
 import factory
+
 from user.models import User
 
 

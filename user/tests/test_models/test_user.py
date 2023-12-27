@@ -1,9 +1,9 @@
 from django.test import TestCase
-from ..factory import UserFactory, SuperUserFactory
+
+from ..factory import SuperUserFactory, UserFactory
 
 
 class UserTestCase(TestCase):
-
     def test_user_creation(self):
         """Test user can be created"""
 
@@ -15,7 +15,7 @@ class UserTestCase(TestCase):
 
     def test_superuser_creation(self):
         """Test superuser can be created"""
-        
+
         user = SuperUserFactory()
         self.assertEqual(user.__str__(), user.username)
         self.assertTrue(user.is_active)
@@ -27,7 +27,3 @@ class UserTestCase(TestCase):
         user = UserFactory()
         self.assertNotEqual(user.password, "defaultpassword")
         self.assertTrue(user.check_password("defaultpassword"))
-
-    
-
-    

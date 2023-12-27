@@ -3,6 +3,7 @@ from django.db import models
 
 from .enums import UserRole
 
+
 class User(AbstractUser):
 
     is_student = models.BooleanField(default=False)

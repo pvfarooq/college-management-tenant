@@ -1,9 +1,11 @@
 .PHONY: help
 help:
 	@echo "Available targets:"
-	@echo "  db.migration.migrate - Create django migrations and migrate to database"
 	@echo "  django.sh            - Run python interactive shell"
 	@echo "  django.bash          - Run bash shell in django container"
+	@echo "  django.test          - Run django tests"
+	@echo "  django.superuser     - Create django superuser"
+	@echo "  db.migration.migrate - Create django migrations and migrate to database"
 	@echo "  db.volume.delete     - Delete database volume"
 
 
@@ -28,3 +30,11 @@ django.bash:
 db.volume.delete:
 	docker compose down
 	docker volume rm clg_mgmt_tenant_postgres_data | true
+
+.PHONY: django.test
+django.test:
+	docker compose run --rm django coverage run manage.py test
+
+.PHONY: django.superuser
+django.superuser:
+	docker compose run --rm django python manage.py createsuperuser
