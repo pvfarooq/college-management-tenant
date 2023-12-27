@@ -16,7 +16,7 @@ DATABASES = {
 }
 
 
-SIMPLE_JWT.update( # noqa F405
+SIMPLE_JWT.update(  # noqa F405
     {
         "ACCESS_TOKEN_LIFETIME": timedelta(days=15),  # noqa F405
         "REFRESH_TOKEN_LIFETIME": timedelta(days=30),  # noqa F405
