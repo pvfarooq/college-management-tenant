@@ -15,8 +15,6 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False)
 
-ALLOWED_HOSTS = []
-
 DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -29,7 +27,6 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
-    "rest_framework_simplejwt",
     "django_extensions",
 ]
 
@@ -136,12 +133,15 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
     "ALGORITHM": "RS256",
+    "SIGNING_KEY": "",
+    "VERIFYING_KEY": "",
     "AUDIENCE": None,
     "ISSUER": "tenant",
     "JSON_ENCODER": None,
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "JTI_CLAIM": "jti",
+    "TOKEN_OBTAIN_SERIALIZER": "user.serializers.TokenObtainPairSerializer",
 }
 
 SWAGGER_SETTINGS = {

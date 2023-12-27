@@ -18,6 +18,3 @@ COPY requirements requirements
 RUN pip install -r requirements/local.txt
 
 COPY . .
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
