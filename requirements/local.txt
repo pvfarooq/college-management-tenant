@@ -3,3 +3,4 @@
 pre-commit
 django-extensions==3.2.3
 Werkzeug==3.0.1
+coverage==7.3.4

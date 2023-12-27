@@ -1,0 +1,12 @@
+[run]
+source = .
+omit =
+    */migrations/*
+    */tests/*
+    manage.py
+    clg_mgmt_tenant/asgi.py
+    clg_mgmt_tenant/wsgi.py
+
+[report]
+show_missing = True
+fail_under = 90
