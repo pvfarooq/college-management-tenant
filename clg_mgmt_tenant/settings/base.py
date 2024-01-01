@@ -34,6 +34,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "core",
     "user",
+    "academic",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
