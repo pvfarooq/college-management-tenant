@@ -31,9 +31,15 @@ db.volume.delete:
 	docker compose down
 	docker volume rm clg_mgmt_tenant_postgres_data | true
 
+
+.PHONY: code.format
+code.format:
+	black . && isort . && flake8 .
+
 .PHONY: django.test
 django.test:
-	docker compose run --rm django coverage run manage.py test
+	docker compose run --rm django coverage run manage.py test $(app)
+	make code.format
 
 .PHONY: django.superuser
 django.superuser:
