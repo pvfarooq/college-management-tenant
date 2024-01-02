@@ -7,6 +7,25 @@ help:
 	@echo "  django.superuser     - Create django superuser"
 	@echo "  db.migration.migrate - Create django migrations and migrate to database"
 	@echo "  db.volume.delete     - Delete database volume"
+	@echo "  docker.image.build   - Build docker image"
+	@echo "  docker.image.push    - Push docker image to registry"
+	@echo "  code.format          - Format code using black, isort and flake8"
+	@echo "  git.prune.deleted    - Delete local branches that have been deleted on remote"
+
+
+.PHONY: docker.image.build
+docker.image.build:
+	docker compose down
+	docker build -t clg_mgmt_tenant-django:1.0 .
+	docker tag clg_mgmt_tenant-django:1.0 ghcr.io/pvfarooq/college-management-tenant/clg_mgmt_tenant-django:1.0
+
+.PHONY: docker.image.push
+docker.image.push:
+	docker push ghcr.io/pvfarooq/college-management-tenant/clg_mgmt_tenant-django:1.0
+
+.PHONY: github.docker.login
+github.docker.login:
+	docker login ghcr.io -u pvfarooq
 
 
 .PHONY: db.migration.migrate
@@ -39,8 +58,15 @@ code.format:
 .PHONY: django.test
 django.test:
 	docker compose run --rm django coverage run manage.py test $(app)
+	docker compose run --rm django coverage report
 	make code.format
 
 .PHONY: django.superuser
 django.superuser:
 	docker compose run --rm django python manage.py createsuperuser
+
+
+.PHONY: git.prune.deleted
+git.prune.deleted:
+	@echo "Pruning deleted branches..."
+	git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D
