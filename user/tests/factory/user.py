@@ -19,6 +19,8 @@ class UserFactory(factory.django.DjangoModelFactory):
     is_active = True
     is_staff = False
     is_superuser = False
+    is_student = False
+    is_faculty = False
 
 
 class SuperUserFactory(UserFactory):
