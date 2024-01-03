@@ -4,6 +4,7 @@ on: push
 
 jobs:
   test:
+    name: Unit testing
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
