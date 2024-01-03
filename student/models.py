@@ -1,7 +1,7 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 
 from academic.models import Course, Department, Stream
+from core.exceptions import DateOrderViolationError
 from core.fields import BatchYearField
 from core.models import BaseModel
 
@@ -46,22 +46,18 @@ class Student(BaseModel):
         ]
 
     def clean(self):
-        if self.discontinued_date and self.discontinued_date > self.enrolled_date:
-            raise ValidationError(
-                "Discontinued date cannot be earlier than enrolled date."
-            )
+        self.validate_date_order("discontinued_date")
+        self.validate_date_order("course_completion_date")
+        self.validate_date_order("dismissed_date")
 
-        if (
-            self.course_completion_date
-            and self.course_completion_date > self.enrolled_date
-        ):
-            raise ValidationError(
-                "Course completion date cannot be earlier than enrolled date."
-            )
+    def validate_date_order(self, field_name):
+        enrolled_date = getattr(self, "enrolled_date", None)
+        field_value = getattr(self, field_name, None)
 
-        if self.dismissed_date and self.dismissed_date > self.enrolled_date:
-            raise ValidationError(
-                "Dismissed date cannot be earlier than enrolled date."
+        if enrolled_date and field_value and field_value > enrolled_date:
+            raise DateOrderViolationError(
+                input_date=field_value,
+                error_detail=f"'{field_name}' cannot be greater than the 'enrolled_date'",
             )
 
     def save(self, *args, **kwargs):
