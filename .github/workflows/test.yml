@@ -14,8 +14,8 @@ jobs:
       DJANGO_SETTINGS_MODULE: clg_mgmt_tenant.settings.local
       DEBUG: False
       SECRET_KEY: a-random-secret-key
-      JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }
-      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }
+      JWT_PRIVATE_KEY: .keys/private.pem
+      JWT_PUBLIC_KEY: .keys/public.pem
       POSTGRES_DB: test_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -23,7 +23,7 @@ jobs:
       POSTGRES_PORT: 5432
 
     services:
-      postgres_main:
+      db:
         image: postgres:15.0
         env:
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
