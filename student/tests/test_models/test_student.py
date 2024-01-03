@@ -1,7 +1,8 @@
-from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
+
+from core.exceptions import DateOrderViolationError
 
 from ..factory import StudentFactory
 
@@ -25,40 +26,41 @@ class StudentTestCase(TestCase):
         """Test course_completion_date is not less than enrolled_date"""
 
         enrolled_date = timezone.now().date()
-        with self.assertRaises(ValidationError) as context:
+        with self.assertRaises(DateOrderViolationError) as context:
             StudentFactory(
                 enrolled_date=enrolled_date,
                 course_completion_date=enrolled_date + timezone.timedelta(days=1),
             )
+
         self.assertEqual(
-            context.exception.messages[0],
-            "Course completion date cannot be earlier than enrolled date.",
+            str(context.exception),
+            "'course_completion_date' cannot be greater than the 'enrolled_date' (code: date_order_violation)",
         )
 
     def test_discontinued_date_not_less_than_enrolled_date(self):
         """Test discontinued_date is not less than enrolled_date"""
 
         enrolled_date = timezone.now().date()
-        with self.assertRaises(ValidationError) as context:
+        with self.assertRaises(DateOrderViolationError) as context:
             StudentFactory(
                 enrolled_date=enrolled_date,
                 discontinued_date=enrolled_date + timezone.timedelta(days=1),
             )
         self.assertEqual(
-            context.exception.messages[0],
-            "Discontinued date cannot be earlier than enrolled date.",
+            str(context.exception),
+            "'discontinued_date' cannot be greater than the 'enrolled_date' (code: date_order_violation)",
         )
 
     def test_dismised_date_not_less_than_enrolled_date(self):
         """Test dismissed_date is not less than enrolled_date"""
 
         enrolled_date = timezone.now().date()
-        with self.assertRaises(ValidationError) as context:
+        with self.assertRaises(DateOrderViolationError) as context:
             StudentFactory(
                 enrolled_date=enrolled_date,
                 dismissed_date=enrolled_date + timezone.timedelta(days=1),
             )
         self.assertEqual(
-            context.exception.messages[0],
-            "Dismissed date cannot be earlier than enrolled date.",
+            str(context.exception),
+            "'dismissed_date' cannot be greater than the 'enrolled_date' (code: date_order_violation)",
         )
