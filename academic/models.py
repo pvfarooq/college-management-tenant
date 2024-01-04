@@ -28,11 +28,16 @@ class Course(BaseModel):
         null=True,
     )
     duration = models.CharField(
-        max_length=50, help_text="Duration of the course (e.g. 3 years"
+        max_length=50, help_text="Duration of the course (e.g. 6 semesters)"
     )
     auto_promotion = models.BooleanField(
         default=False,
-        help_text="True if students are automatically promoted to the next class at the end of the semester",
+        help_text="If checked, students will be automatically promoted to next semester",
+    )
+    intake = models.PositiveIntegerField(
+        help_text="Number of students that can be admitted to this course per batch",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
@@ -44,7 +49,6 @@ class Stream(BaseModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     code = models.CharField(
         max_length=10,
-        help_text="Stream code (e.g. CS101)",
         unique=True,
         blank=True,
         null=True,
@@ -52,3 +56,11 @@ class Stream(BaseModel):
 
     def __str__(self):
         return self.title
+
+
+class CourseSyllabus(BaseModel):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    attachment = models.FileField(upload_to="course/syllabus/")
+
+    def __str__(self):
+        return self.course.title

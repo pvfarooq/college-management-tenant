@@ -68,9 +68,13 @@ django.superuser:
 
 .PHONY: django.migrations.clean
 django.migrations.clean:
-	@echo "Removing migration files..."
-	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
-
+	@echo "Are you sure you want to delete all migrations? [y/n] " && read ans && [ $${ans:-n} = y ]; \
+	if [ $$? -eq 0 ]; then \
+		echo "Removing migration files..." ; \
+		find . -path "*/migrations/*.py" -not -name "__init__.py" -delete ; \
+	else \
+		echo "Aborted"; \
+	fi
 
 .PHONY: git.prune.deleted
 git.prune.deleted:
