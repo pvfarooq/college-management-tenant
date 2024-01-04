@@ -6,6 +6,7 @@ help:
 	@echo "  django.test          - Run django tests"
 	@echo "  django.superuser     - Create django superuser"
 	@echo "  db.migration.migrate - Create django migrations and migrate to database"
+	@echo "  db.migration.clean   - Remove all django migrations (Dangerous!)"
 	@echo "  db.volume.delete     - Delete database volume"
 	@echo "  docker.image.build   - Build docker image"
 	@echo "  docker.image.push    - Push docker image to registry"
@@ -64,6 +65,11 @@ django.test:
 .PHONY: django.superuser
 django.superuser:
 	docker compose run --rm django python manage.py createsuperuser
+
+.PHONY: django.migrations.clean
+django.migrations.clean:
+	@echo "Removing migration files..."
+	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 
 
 .PHONY: git.prune.deleted
