@@ -37,3 +37,11 @@ class BatchYearFieldTest(TestCase):
         expected_error_message = "Batch year must be between 1980 and "
         expected_error_message += f"{datetime.datetime.now().year + 1}"
         self.assertIn(expected_error_message, str(context.exception))
+
+    def test_db_type_method(self):
+        """Test the db_type method"""
+        field = BatchYearField()
+        self.assertEqual(
+            field.db_type(None),
+            'smallint CHECK ("batch" >= 1980 AND "batch" <= extract(year from current_date) + 1)',
+        )

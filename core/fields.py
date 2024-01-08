@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -8,10 +8,40 @@ class BatchYearField(models.IntegerField):
     """An integer field representing a batch year, limited to values between 1980 and the current year + 1."""
 
     def __init__(self, *args, **kwargs):
+        self.name = "batch_year"
         super().__init__(*args, **kwargs)
 
     def validate_year(self, value):
-        if value < 1980 or value > datetime.datetime.now().year + 1:
+        current_year = datetime.now().year
+        if value < 1980 or value > current_year + 1:
             raise ValidationError(
-                f"Batch year must be between 1980 and {datetime.datetime.now().year + 1}"
+                f"Batch year must be between 1980 and {current_year + 1}"
             )
+
+    def db_type(self, connection):
+        return 'smallint CHECK ("batch" >= 1980 AND "batch" <= extract(year from current_date) + 1)'
+
+    def check(self, **kwargs):
+        if "value" in kwargs:
+            self.validate_year(kwargs["value"])
+        return super().check(**kwargs)
+
+
+class SemesterField(models.PositiveSmallIntegerField):
+    """An integer field representing a semester, limited to values between 1 and 10."""
+
+    def validate_semester(self, value):
+        if value < 1 or value > 10:
+            raise ValidationError("Semester must be between 1 and 10")
+
+    def db_type(self, connection):
+        return 'smallint CHECK ("semester" >= 1 AND "semester" <= 10)'
+
+    def check(self, **kwargs):
+        if "value" in kwargs:
+            self.validate_semester(kwargs["value"])
+        return super().check(**kwargs)
+
+    def save(self, *args, **kwargs):
+        self.validate_semester(self.value)
+        super().save(*args, **kwargs)
