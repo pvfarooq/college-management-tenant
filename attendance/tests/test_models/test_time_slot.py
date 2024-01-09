@@ -17,7 +17,7 @@ class TimeSlotTest(TestCase):
             TimeSlotFactory(start_time="12:00", end_time="11:00")
         self.assertEqual(
             str(cm.exception),
-            "Given time (12:00) is less than the reference time. (code: time_order_violation)"
+            "Given time 12:00 is less than the reference time. (code: time_order_violation)"
             if not cm.exception.error_detail
             else cm.exception.error_detail,
         )
@@ -27,7 +27,7 @@ class TimeSlotTest(TestCase):
             TimeSlotFactory(start_time="12:00", end_time="12:00")
         self.assertEqual(
             str(cm.exception),
-            "Given time (12:00) is less than the reference time. (code: time_order_violation)"
+            "Given time 12:00 is less than the reference time. (code: time_order_violation)"
             if not cm.exception.error_detail
             else cm.exception.error_detail,
         )

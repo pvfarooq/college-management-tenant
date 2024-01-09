@@ -18,7 +18,7 @@ class SpecialTimeSlotTest(TestCase):
             SpecialTimeSlotFactory(start_time="12:00", end_time="11:00")
         self.assertEqual(
             str(cm.exception),
-            "Given time (12:00) is less than the reference time. (code: time_order_violation)",
+            "Given time 12:00 is less than the reference time. (code: time_order_violation)",
         )
 
     def test_start_time_equal_to_end_time(self):
@@ -26,7 +26,7 @@ class SpecialTimeSlotTest(TestCase):
             SpecialTimeSlotFactory(start_time="12:00", end_time="12:00")
         self.assertEqual(
             str(cm.exception),
-            "Given time (12:00) is less than the reference time. (code: time_order_violation)",
+            "Given time 12:00 is less than the reference time. (code: time_order_violation)",
         )
 
     def test_start_time_greater_than_end_time(self):
