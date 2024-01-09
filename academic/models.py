@@ -1,5 +1,6 @@
 from django.db import models
 
+from core.fields import SemesterField
 from core.models import BaseModel
 
 
@@ -64,3 +65,21 @@ class CourseSyllabus(BaseModel):
 
     def __str__(self):
         return self.course.title
+
+
+class Subject(BaseModel):
+    title = models.CharField(max_length=255)
+    code = models.CharField(
+        max_length=10,
+        unique=True,
+    )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    stream = models.ForeignKey(Stream, on_delete=models.CASCADE, null=True, blank=True)
+    semester = SemesterField()
+    credit = models.PositiveIntegerField(blank=True, null=True)
+    is_elective = models.BooleanField(default=False)
+    is_lab = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title

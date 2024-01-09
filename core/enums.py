@@ -29,9 +29,9 @@ class Days(str, Enum):
             weekdays_only (bool): If True, only weekdays will be included in the choices.
         """
         if weekdays_only:
-            return [(day.value, day.name) for day in cls.weekdays()]
+            return [(day.value, day.name) for day in cls if day.value not in ["sunday"]]
         return [(day.value, day.name) for day in cls]
 
     @classmethod
-    def weekdays(cls) -> List["Days"]:
-        return [day for day in cls if day.value not in ["sunday"]]
+    def weekdays(cls) -> List[str]:
+        return [day.value for day in cls if day.value not in ["sunday"]]
