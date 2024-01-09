@@ -13,7 +13,7 @@ class DateOrderViolationError(CustomError):
 
     def default_error_message(self):
         return (
-            f"Given date ({self.input_date}) is less than the reference date."
+            f"Given date {self.input_date} is less than the reference date."
             if not self.error_detail
             else self.error_detail
         )
