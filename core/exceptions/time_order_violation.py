@@ -13,7 +13,7 @@ class TimeOrderViolationError(CustomError):
 
     def default_error_message(self):
         return (
-            f"Given time ({self.input_time}) is less than the reference time."
+            f"Given time {self.input_time} is less than the reference time."
             if not self.error_detail
             else self.error_detail
         )
