@@ -10,14 +10,14 @@ class SemesterFieldTest(TestCase):
 
     def assertValidationError(self, value, expected_error_message):
         with self.assertRaises(ValidationError) as context:
-            self.field.validate_semester(value)
+            self.field.validate(value)
         self.assertIn(expected_error_message, str(context.exception))
 
     def test_valid_semester(self):
         """Test with a valid semester"""
         value = 1
         try:
-            self.field.validate_semester(value)
+            self.field.validate(value)
         except ValidationError:
             self.fail("Validation should not raise an error for a valid semester")
 

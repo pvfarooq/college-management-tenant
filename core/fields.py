@@ -30,18 +30,22 @@ class BatchYearField(models.IntegerField):
 class SemesterField(models.PositiveSmallIntegerField):
     """An integer field representing a semester, limited to values between 1 and 10."""
 
-    def validate_semester(self, value):
+    help_text = "The semester number, of a batch, ranging from 1 to 10."
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def validate(self, value):
         if value < 1 or value > 10:
             raise ValidationError("Semester must be between 1 and 10")
 
     def db_type(self, connection):
-        return 'smallint CHECK ("semester" >= 1 AND "semester" <= 10)'
+        return "smallint"
+
+    def db_check(self, connection):
+        return '"semester" >= 1 AND "semester" <= 10'
 
     def check(self, **kwargs):
         if "value" in kwargs:
-            self.validate_semester(kwargs["value"])
+            self.validate(kwargs["value"])
         return super().check(**kwargs)
-
-    def save(self, *args, **kwargs):
-        self.validate_semester(self.value)
-        super().save(*args, **kwargs)
