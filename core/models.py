@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 
 from .enums import AttendanceMode
+from .exceptions import CollegeSettingsAlreadyExists
 from .fields import SemesterField
 
 
@@ -58,6 +59,15 @@ class CollegeSettings(BaseModel):
                 name="college_settings_singleton",
             )
         ]
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        if self._state.adding and CollegeSettings.objects.exists():
+            raise CollegeSettingsAlreadyExists
+        super().clean()
 
 
 class SemesterSettings(BaseModel):
