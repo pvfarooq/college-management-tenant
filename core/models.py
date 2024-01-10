@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 
 from .enums import AttendanceMode
+from .fields import SemesterField
 
 
 class BaseModel(models.Model):
@@ -39,14 +40,33 @@ class CollegeSettings(BaseModel):
     attendance_mode = models.CharField(max_length=20, choices=AttendanceMode.choices())
     max_course_change_window_days = models.PositiveIntegerField()
 
+    _singleton = models.BooleanField(
+        default=True,
+        editable=False,
+        unique=True,
+        help_text="This field is used to ensure that only one instance of this model exists.",
+    )
+
     def __str__(self):
         return "College Settings"
 
+    class Meta:
+        verbose_name_plural = "College Settings"
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(_singleton=True),
+                name="college_settings_singleton",
+            )
+        ]
+
 
 class SemesterSettings(BaseModel):
-    semester = models.CharField(max_length=10)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    semester = SemesterField(unique=True)
+    start_month_day = models.DateField()
+    end_month_day = models.DateField()
 
     def __str__(self):
-        return self.semester
+        return f"Semester {self.semester} Settings"
+
+    class Meta:
+        verbose_name_plural = "Semester Settings"
