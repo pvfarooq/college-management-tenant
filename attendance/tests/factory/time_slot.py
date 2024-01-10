@@ -1,8 +1,6 @@
-import random
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 
 import factory
-from django.utils import timezone
 
 from attendance.models import TimeSlot
 
@@ -11,15 +9,14 @@ class TimeSlotFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = TimeSlot
 
-    @factory.lazy_attribute
-    def start_time(self):
-        # Calculate start time as a random time between 8 AM and 6 PM
-        start_time = timezone.now() + timedelta(hours=random.randint(8, 18))
-        return start_time.time()
+    start_time = time(9, 0, 0).strftime("%H:%M:%S")
 
     @factory.lazy_attribute
     def end_time(self):
-        # Calculate end time as 45 minutes ahead of start time
-        start_time = datetime.combine(datetime.today(), self.start_time)
-        end_time = start_time + timedelta(minutes=45)
-        return end_time.time()
+        start_time: str = self.start_time
+        end_time = datetime.strptime(start_time, "%H:%M:%S") + timedelta(minutes=45)
+
+        if isinstance(end_time, datetime):
+            return end_time.time().strftime("%H:%M:%S")
+        elif isinstance(end_time, str):
+            return end_time

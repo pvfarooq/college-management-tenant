@@ -12,7 +12,7 @@ class BatchYearFieldTest(TestCase):
         field = BatchYearField()
         value = 2022
         try:
-            field.validate(value)
+            field.validate(value, field)
         except ValidationError:
             self.fail("Validation should not raise an error for a valid batch year")
 
@@ -21,7 +21,7 @@ class BatchYearFieldTest(TestCase):
         field = BatchYearField()
         value = 1979
         with self.assertRaises(ValidationError) as context:
-            field.validate(value)
+            field.validate(value, field)
 
         expected_error_message = "Batch year must be between 1980 and "
         expected_error_message += f"{datetime.datetime.now().year + 1}"
@@ -32,7 +32,7 @@ class BatchYearFieldTest(TestCase):
         field = BatchYearField()
         value = datetime.datetime.now().year + 2
         with self.assertRaises(ValidationError) as context:
-            field.validate(value)
+            field.validate(value, field)
 
         expected_error_message = "Batch year must be between 1980 and "
         expected_error_message += f"{datetime.datetime.now().year + 1}"
