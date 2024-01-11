@@ -8,7 +8,7 @@ from student.utils import generate_admission_number
 from ..factory import StudentFactory
 
 
-class UtilityFunctionTest(TestCase):
+class GenerateAdmissionNumberTestCase(TestCase):
     def setUp(self):
         self.student1 = StudentFactory(admission_num=1001)
         self.student2 = StudentFactory(admission_num=1002)

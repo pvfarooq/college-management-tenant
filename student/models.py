@@ -2,10 +2,10 @@ from django.db import models
 
 from academic.models import Course, Department, Stream
 from core.exceptions import DateOrderViolationError
-from core.fields import BatchYearField
+from core.fields import BatchYearField, SemesterField
 from core.models import BaseModel
 
-from .enums import CourseStatus
+from .enums import CourseStatus, LeaveRequestStatus
 
 
 class Student(BaseModel):
@@ -63,3 +63,49 @@ class Student(BaseModel):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+
+class LeaveRequest(BaseModel):
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+    )
+    tutor = models.ForeignKey(
+        "faculty.Tutor",
+        on_delete=models.CASCADE,
+    )
+    semester = SemesterField()
+    from_date = models.DateField()
+    to_date = models.DateField()
+    reason = models.TextField()
+    status = models.CharField(
+        max_length=15,
+        choices=LeaveRequestStatus.choices(),
+        default=LeaveRequestStatus.PENDING,
+    )
+
+    def __str__(self):
+        return f"{self.student.name} - {self.status}"
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["student"], name="student_idx"),
+        ]
+
+    def save(self, *args, **kwargs):
+        self.validate_dates()
+        super().save(*args, **kwargs)
+
+    @property
+    def total_days(self) -> int:
+        """Returns the total leave days requested"""
+        return (self.to_date - self.from_date).days + 1
+
+    def validate_dates(self):
+        """Validates the leave request dates"""
+
+        if self.from_date > self.to_date:
+            raise DateOrderViolationError(
+                input_date=self.to_date,
+                error_detail="'to_date' cannot be greater than 'from_date'",
+            )

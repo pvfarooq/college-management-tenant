@@ -10,3 +10,13 @@ class CourseStatus(str, Enum):
     @classmethod
     def choices(cls):
         return [(key.value, key.name) for key in cls]
+
+
+class LeaveRequestStatus(str, Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+    @classmethod
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
