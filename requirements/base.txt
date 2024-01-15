@@ -5,5 +5,5 @@ psycopg2==2.9.9
 factory-boy==3.3.0
 django-cors-headers==4.3.1
 argon2-cffi==23.1.0
-ipython==8.19.0
+ipython==8.20.0
 drf-yasg==1.21.7
