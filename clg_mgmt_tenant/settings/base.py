@@ -41,6 +41,7 @@ LOCAL_APPS = [
     "attendance",
     "exam",
     "assignment",
+    "hostel",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

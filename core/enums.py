@@ -35,3 +35,12 @@ class Days(str, Enum):
     @classmethod
     def weekdays(cls) -> List[str]:
         return [day.value for day in cls if day.value not in ["sunday"]]
+
+
+class Gender(str, Enum):
+    MALE = "male"
+    FEMALE = "female"
+
+    @classmethod
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
