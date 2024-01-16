@@ -1,1 +1,6 @@
-from .user import SuperUserFactory, UserFactory  # noqa
+from .user import (  # noqa
+    FemaleUserFactory,
+    MaleUserFactory,
+    SuperUserFactory,
+    UserFactory,
+)
