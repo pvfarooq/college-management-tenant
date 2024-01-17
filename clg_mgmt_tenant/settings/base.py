@@ -164,3 +164,6 @@ SWAGGER_SETTINGS = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = False
+
+# Reset password link timeout in seconds
+PASSWORD_RESET_TIMEOUT = 60 * 60

@@ -2,7 +2,7 @@ import jwt
 from django.conf import settings
 from django.test import TestCase
 
-from user.serializers import TokenObtainPairSerializer
+from user.api.serializers import TokenObtainPairSerializer
 
 from ..factory import UserFactory
 
