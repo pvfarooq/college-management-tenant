@@ -5,5 +5,5 @@ from .swagger import urlpatterns as swagger_urlpatterns
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/user/", include("user.urls")),
+    path("api/users/", include("user.urls")),
 ] + swagger_urlpatterns
