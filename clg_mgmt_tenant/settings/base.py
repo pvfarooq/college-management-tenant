@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "core.middlewares.exception_interceptor.ExceptionInterceptorMiddleware",
 ]
 
 ROOT_URLCONF = "clg_mgmt_tenant.urls"
@@ -152,7 +153,7 @@ SIMPLE_JWT = {
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "JTI_CLAIM": "jti",
-    "TOKEN_OBTAIN_SERIALIZER": "user.serializers.TokenObtainPairSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "user.api.serializers.TokenObtainPairSerializer",
 }
 
 SWAGGER_SETTINGS = {

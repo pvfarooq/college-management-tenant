@@ -6,13 +6,14 @@ from django.utils.http import urlsafe_base64_encode
 
 from user.enums import UserRole
 
-from ..factory import SuperUserFactory, UserFactory
+from ..factory import CollegeAdminFactory, SuperUserFactory, UserFactory
 
 
 class UserTestCase(TestCase):
     def setUp(self):
         self.user = UserFactory()
         self.superuser = SuperUserFactory()
+        self.collegeadmin = CollegeAdminFactory()
 
     def test_user_creation(self):
         """Test user can be created"""
@@ -29,7 +30,14 @@ class UserTestCase(TestCase):
         self.assertTrue(self.superuser.is_active)
         self.assertTrue(self.superuser.is_staff)
         self.assertTrue(self.superuser.is_superuser)
-        self.assertEqual(self.superuser.role, UserRole.ADMIN)
+
+    def test_collegeadmin_creation(self):
+        """Test collegeadmin can be created"""
+
+        self.assertEqual(self.collegeadmin.__str__(), self.collegeadmin.username)
+        self.assertTrue(self.collegeadmin.is_active)
+        self.assertTrue(self.collegeadmin.is_staff)
+        self.assertFalse(self.collegeadmin.is_superuser)
 
     def test_password_is_encrypted(self):
         """Test password is encrypted"""
@@ -47,6 +55,12 @@ class UserTestCase(TestCase):
 
         user = UserFactory(is_faculty=True)
         self.assertEqual(user.role, UserRole.FACULTY)
+
+    def test_collegeadmin_role(self):
+        """Test user role is collegeadmin"""
+
+        user = UserFactory(is_college_admin=True)
+        self.assertEqual(user.role, UserRole.COLLEGE_ADMIN)
 
     def test_generate_password_reset_link(self):
         uidb64 = urlsafe_base64_encode(force_bytes(self.user.pk))

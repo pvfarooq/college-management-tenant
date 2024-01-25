@@ -13,6 +13,9 @@ from .enums import UserRole
 
 
 class User(AbstractUser):
+    is_college_admin = models.BooleanField(
+        default=False, help_text="Designates whether the user is a college admin."
+    )
     is_student = models.BooleanField(default=False)
     is_faculty = models.BooleanField(default=False)
     gender = models.CharField(max_length=10, choices=Gender.choices())
@@ -21,8 +24,8 @@ class User(AbstractUser):
     def role(self) -> UserRole:
         """Return the user's role."""
 
-        if self.is_superuser:
-            return UserRole.ADMIN
+        if self.is_college_admin:
+            return UserRole.COLLEGE_ADMIN
         elif self.is_student:
             return UserRole.STUDENT
         elif self.is_faculty:
