@@ -28,7 +28,7 @@ class TimeSlot(BaseModel):
         Validates that the start time is less than the end time.
         """
         if self.start_time >= self.end_time:
-            raise TimeOrderViolationError(self.start_time)
+            raise TimeOrderViolationError(self.start_time, self.end_time)
 
 
 class SpecialTimeSlot(TimeSlot):
