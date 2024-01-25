@@ -23,6 +23,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     is_superuser = False
     is_student = False
     is_faculty = False
+    is_college_admin = False
 
 
 class MaleUserFactory(UserFactory):
@@ -35,4 +36,9 @@ class FemaleUserFactory(UserFactory):
 
 class SuperUserFactory(UserFactory):
     is_superuser = True
+    is_staff = True
+
+
+class CollegeAdminFactory(UserFactory):
+    is_college_admin = True
     is_staff = True

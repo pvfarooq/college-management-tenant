@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class UserRole(str, Enum):
-    ADMIN = "admin"
+    COLLEGE_ADMIN = "college_admin"
     STUDENT = "student"
     FACULTY = "faculty"
