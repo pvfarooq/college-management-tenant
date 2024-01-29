@@ -9,4 +9,4 @@ from .serializers import TimeSlotSerializer
 class TimeSlotViewSet(viewsets.ModelViewSet):
     permission_classes = [IsCollegeAdminOrReadOnly]
     serializer_class = TimeSlotSerializer
-    queryset = TimeSlot.objects.all()
+    queryset = TimeSlot.objects.all().order_by("start_time")
