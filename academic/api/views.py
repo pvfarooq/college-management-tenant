@@ -1,15 +1,15 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 
-from academic.models import Department
+from academic.models import Course, Department
 from user.permissions import IsCollegeAdminOrReadOnly
 
-from .serializers import DepartmentSerializer
+from .serializers import CourseListSerializer, CourseSerializer, DepartmentSerializer
 
 
 class DepartmentViewSet(ModelViewSet):
     serializer_class = DepartmentSerializer
-    queryset = Department.objects.all()
+    queryset = Department.objects.all().order_by("title")
 
     def get_permissions(self):
         if self.action == "list":
@@ -17,3 +17,19 @@ class DepartmentViewSet(ModelViewSet):
         else:
             permission_classes = [IsCollegeAdminOrReadOnly]
         return [permission() for permission in permission_classes]
+
+
+class CourseViewSet(ModelViewSet):
+    queryset = Course.objects.all().order_by("title")
+
+    def get_permissions(self):
+        if self.action == "list":
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsCollegeAdminOrReadOnly]
+        return [permission() for permission in permission_classes]
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return CourseListSerializer
+        return CourseSerializer

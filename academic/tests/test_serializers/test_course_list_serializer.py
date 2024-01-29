@@ -1,0 +1,26 @@
+from django.test import TestCase
+
+from academic.api.serializers import CourseListSerializer
+
+from ..factory import CourseFactory
+
+
+class CourseSerializerTest(TestCase):
+    def setUp(self):
+        self.course = CourseFactory(code="CSE 101")
+        self.serializer = CourseListSerializer
+
+    def test_course_list_serializer(self):
+        serializer = self.serializer(self.course)
+        self.assertEqual(
+            serializer.data,
+            {
+                "id": str(self.course.id),
+                "department": self.course.department.title,
+                "title": self.course.title,
+                "code": self.course.code,
+                "duration": self.course.duration,
+                "auto_promotion": self.course.auto_promotion,
+                "intake": self.course.intake,
+            },
+        )
