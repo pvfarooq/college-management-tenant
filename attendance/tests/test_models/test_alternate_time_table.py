@@ -35,6 +35,8 @@ class AlternateTimeTableTestCase(TestCase):
             AlternateTimeTableFactory(
                 default_timetable=self.alternate_timetable.default_timetable,
                 faculty=self.alternate_timetable.faculty,
+                start_date=self.alternate_timetable.start_date,
+                end_date=self.alternate_timetable.end_date,
             )
         self.assertEqual(
             str(cm.exception),
