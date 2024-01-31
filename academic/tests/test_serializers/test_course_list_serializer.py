@@ -5,7 +5,7 @@ from academic.api.serializers import CourseListSerializer
 from ..factory import CourseFactory
 
 
-class CourseSerializerTest(TestCase):
+class CourseListSerializerTest(TestCase):
     def setUp(self):
         self.course = CourseFactory(code="CSE 101")
         self.serializer = CourseListSerializer
