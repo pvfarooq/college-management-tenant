@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from academic.models import Course, Department
+from academic.models import Course, Department, Stream
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
@@ -21,3 +21,17 @@ class CourseSerializer(BaseCourseSerializer):
 
 class CourseListSerializer(BaseCourseSerializer):
     department = serializers.StringRelatedField()
+
+
+class BaseStreamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stream
+        exclude = ["created_at", "updated_at"]
+
+
+class StreamSerializer(BaseStreamSerializer):
+    pass
+
+
+class StreamListSerializer(BaseStreamSerializer):
+    course = serializers.StringRelatedField()
