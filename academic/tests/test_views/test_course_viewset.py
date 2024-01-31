@@ -86,6 +86,10 @@ class CollegeAdminCourseViewSetTestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["title"], self.course.title)
+        self.assertEqual(
+            response.data["results"][0]["department"], self.course.department.title
+        )
 
     def test_college_admin_create_course(self):
         url = reverse("course-list")
@@ -105,6 +109,7 @@ class CollegeAdminCourseViewSetTestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], self.course.title)
+        self.assertEqual(response.data["department"], self.course.department.title)
 
     def test_college_admin_update_course(self):
         url = reverse("course-detail", kwargs={"pk": self.course.pk})
@@ -118,6 +123,7 @@ class CollegeAdminCourseViewSetTestCase(APITestCase):
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], "Computer Science")
+        self.assertEqual(response.data["department"], self.course.department.id)
 
     def test_college_admin_delete_course(self):
         url = reverse("course-detail", kwargs={"pk": self.course.pk})
