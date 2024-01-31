@@ -30,6 +30,6 @@ class CourseViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):
-        if self.action == "list":
+        if self.action in ["list", "retrieve"]:
             return CourseListSerializer
         return CourseSerializer
