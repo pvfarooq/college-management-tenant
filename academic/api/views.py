@@ -1,7 +1,7 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 
-from academic.models import Course, Department, Stream
+from academic.models import Course, Department, Stream, Subject
 from user.permissions import IsCollegeAdminOrReadOnly
 
 from .serializers import (
@@ -10,6 +10,8 @@ from .serializers import (
     DepartmentSerializer,
     StreamListSerializer,
     StreamSerializer,
+    SubjectListSerializer,
+    SubjectSerializer,
 )
 
 
@@ -55,3 +57,19 @@ class StreamViewSet(ModelViewSet):
         if self.action in ["list", "retrieve"]:
             return StreamListSerializer
         return StreamSerializer
+
+
+class SubjectViewSet(ModelViewSet):
+    queryset = Subject.objects.all().order_by("title")
+
+    def get_permissions(self):
+        if self.action == "list":
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsCollegeAdminOrReadOnly]
+        return [permission() for permission in permission_classes]
+
+    def get_serializer_class(self):
+        if self.action in ["list", "retrieve"]:
+            return SubjectListSerializer
+        return SubjectSerializer
