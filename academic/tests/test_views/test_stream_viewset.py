@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 from user.tests.factory import CollegeAdminFactory, UserFactory
 
-from ..factory import StreamFactory
+from ..factory import CourseFactory, StreamFactory
 
 
 class AnonymousUserStreamViewSetTestCase(APITestCase):
@@ -133,3 +133,23 @@ class CollegeAdminStreamViewSetTestCase(APITestCase):
         url = reverse("stream-detail", kwargs={"pk": self.stream.pk})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+class StreamViewSetDjangoFilterBackendTestCase(APITestCase):
+    """Test Django filter backend in the ViewSet"""
+
+    def setUp(self):
+        self.list_url = reverse("stream-list")
+        self.user = UserFactory()
+        self.course = CourseFactory()
+        self.stream = StreamFactory()
+        self.stream2 = StreamFactory(course=self.course)
+        self.stream3 = StreamFactory(course=self.course)
+        self.client.force_authenticate(user=self.user)
+
+    def test_filter_stream_by_course(self):
+        response = self.client.get(self.list_url, {"course": self.course.pk})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 2)
+        self.assertEqual(response.data["results"][0]["course"], self.course.title)
+        self.assertEqual(response.data["results"][1]["course"], self.course.title)
