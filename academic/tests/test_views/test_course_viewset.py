@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 from user.tests.factory import CollegeAdminFactory, UserFactory
 
-from ..factory import CourseFactory
+from ..factory import CourseFactory, DepartmentFactory
 
 
 class AnonymousUserCourseViewSetTestCase(APITestCase):
@@ -129,3 +129,58 @@ class CollegeAdminCourseViewSetTestCase(APITestCase):
         url = reverse("course-detail", kwargs={"pk": self.course.pk})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+class CourseViewSetDjangoFilterBackendTestCase(APITestCase):
+    """Test Django filter backend in ViewSet"""
+
+    def setUp(self):
+        self.list_url = reverse("course-list")
+        self.user = UserFactory()
+        department = DepartmentFactory()
+        self.course = CourseFactory(department=department, auto_promotion=True)
+        self.course2 = CourseFactory(department=department, auto_promotion=True)
+        self.course3 = CourseFactory(auto_promotion=False)
+        self.client.force_authenticate(user=self.user)
+
+    def test_filter_course_by_department(self):
+        response = self.client.get(
+            self.list_url, {"department": self.course.department.pk}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 2)
+        self.assertEqual(
+            response.data["results"][0]["department"], self.course.department.title
+        )
+
+    def test_filter_course_by_autopromotion(self):
+        response = self.client.get(self.list_url, {"auto_promotion": False})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["auto_promotion"], False)
+        self.assertEqual(response.data["results"][0]["title"], self.course3.title)
+
+
+class CourseViewSetSearchFilterBackendTestCase(APITestCase):
+    """Test search filter backend in ViewSet"""
+
+    def setUp(self):
+        self.list_url = reverse("course-list")
+        self.user = UserFactory()
+        self.course = CourseFactory(title="Computer Science", code="CS")
+        self.course2 = CourseFactory(title="Electrical Engineering", code="EE")
+        self.client.force_authenticate(user=self.user)
+
+    def test_search_course_by_title(self):
+        response = self.client.get(self.list_url, {"search": "Computer Science"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["title"], "Computer Science")
+        self.assertEqual(response.data["results"][0]["code"], "CS")
+
+    def test_search_course_by_code(self):
+        response = self.client.get(self.list_url, {"search": "CS"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["code"], "CS")
+        self.assertEqual(response.data["results"][0]["title"], "Computer Science")

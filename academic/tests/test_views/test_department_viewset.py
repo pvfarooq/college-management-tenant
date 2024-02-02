@@ -118,3 +118,26 @@ class CollegeAdminDepartmentViewSetTestCase(APITestCase):
         response = self.client.delete(detail_url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(response.data, None)
+
+
+class DepartmentViewSetSearchFilterBackendTestCase(APITestCase):
+    """Test search filter backend in ViewSet"""
+
+    def setUp(self):
+        self.list_url = reverse("department-list")
+        self.department = DepartmentFactory(title="Information Technology", code="IT")
+        self.department2 = DepartmentFactory(title="Computer Science", code="CS")
+        self.user = UserFactory()
+        self.client.force_authenticate(user=self.user)
+
+    def test_search_department_by_title(self):
+        response = self.client.get(self.list_url, {"search": "Information"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data["results"]), 1)
+        self.assertEqual(response.data["results"][0]["title"], "Information Technology")
+
+    def test_search_department_by_code(self):
+        response = self.client.get(self.list_url, {"search": "CS"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data["results"]), 1)
+        self.assertEqual(response.data["results"][0]["code"], "CS")
