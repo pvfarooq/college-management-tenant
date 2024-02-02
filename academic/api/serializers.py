@@ -40,7 +40,7 @@ class StreamListSerializer(BaseStreamSerializer):
 class BaseSubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        exclude = ["created_at", "updated_at"]
+        exclude = ["created_at", "updated_at", "is_active"]
 
 
 class SubjectSerializer(BaseSubjectSerializer):
