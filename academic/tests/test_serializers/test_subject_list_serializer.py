@@ -25,5 +25,6 @@ class SubjectListSerializerTestCase(TestCase):
                 "is_elective": self.subject.is_elective,
                 "is_lab": self.subject.is_lab,
                 "is_active": self.subject.is_active,
+                "is_common": self.subject.is_common,
             },
         )

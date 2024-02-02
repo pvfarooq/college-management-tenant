@@ -25,6 +25,7 @@ class SubjectSerializerTestCase(TestCase):
                 "is_elective": self.subject.is_elective,
                 "is_lab": self.subject.is_lab,
                 "is_active": self.subject.is_active,
+                "is_common": self.subject.is_common,
             },
         )
 
@@ -36,7 +37,6 @@ class SubjectSerializerTestCase(TestCase):
             {
                 "title",
                 "code",
-                "course",
                 "semester",
             },
         )
@@ -47,7 +47,6 @@ class SubjectSerializerTestCase(TestCase):
             data={
                 "title": subject.title,
                 "code": subject.code,
-                "course": subject.course.id,
                 "semester": subject.semester,
             }
         )
@@ -69,7 +68,6 @@ class SubjectSerializerTestCase(TestCase):
             data={
                 "title": subject.title,
                 "code": "CSE110",
-                "course": subject.course.id,
                 "semester": subject.semester,
             }
         )
