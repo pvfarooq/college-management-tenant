@@ -19,3 +19,4 @@ class SubjectFactory(factory.django.DjangoModelFactory):
     is_elective = False
     is_lab = False
     is_active = True
+    is_common = False

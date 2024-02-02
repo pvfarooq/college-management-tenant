@@ -10,4 +10,5 @@ from .duplicate_timetable import DuplicateAlternateTimeTableEntry  # noqa
 from .duplicate_timetable import DuplicateTimeTableEntry  # noqa
 from .leave_request_update_denied import LeaveRequestUpdateDeniedError  # noqa
 from .payment_field_required import PaymentFieldRequired  # noqa
+from .subject_constraint_error import SubjectConstraintError  # noqa F401
 from .time_order_violation import TimeOrderViolationError  # noqa

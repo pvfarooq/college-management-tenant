@@ -1,5 +1,6 @@
 from django.db import models
 
+from core.exceptions import SubjectConstraintError
 from core.fields import SemesterField
 from core.models import BaseModel
 
@@ -69,17 +70,34 @@ class CourseSyllabus(BaseModel):
 
 class Subject(BaseModel):
     title = models.CharField(max_length=255)
-    code = models.CharField(
-        max_length=10,
-        unique=True,
-    )
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    code = models.CharField(max_length=10, unique=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     stream = models.ForeignKey(Stream, on_delete=models.CASCADE, null=True, blank=True)
     semester = SemesterField()
     credit = models.PositiveIntegerField(blank=True, null=True)
     is_elective = models.BooleanField(default=False)
     is_lab = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_common = models.BooleanField(
+        default=False, help_text="Check this if this subject is common for all streams"
+    )
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        """
+        Validate that either course should be set or is_common should be set, not both.
+        """
+        if self.course and self.is_common:
+            detail = (
+                "Either 'course' should be set or 'is_common' should be set, not both."
+            )
+            raise SubjectConstraintError(error_detail=detail)
+        elif not self.course and not self.is_common:
+            raise SubjectConstraintError()
+        super().clean()
