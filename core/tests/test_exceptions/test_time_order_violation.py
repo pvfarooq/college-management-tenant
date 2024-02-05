@@ -38,7 +38,7 @@ class TimeOrderViolationErrorTestCase(TestCase):
         self.assertEqual(
             str(exception),
             f"start time '{self.start_time}' must be less than the end time"
-            f" '{self.end_time}' (code: {self.error_code})",
+            f" '{self.end_time}'",
         )
 
     def test_without_start_time(self):

@@ -25,5 +25,5 @@ class DuplicateAttendanceEntryTestCase(TestCase):
         self.assertEqual(exception.error_code, self.error_code)
         self.assertEqual(
             str(exception),
-            f"An attendance already exists for the given date, time slot and student. (code: {self.error_code})",
+            "An attendance already exists for the given date, time slot and student.",
         )

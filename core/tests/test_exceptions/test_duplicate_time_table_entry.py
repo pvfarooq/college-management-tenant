@@ -25,7 +25,7 @@ class DuplicateTimeTableEntryTestCase(TestCase):
         self.assertEqual(exception.error_code, self.error_code)
         self.assertEqual(
             str(exception),
-            f"A timetable already exists for the given day and time slot. (code: {self.error_code})",
+            "A timetable already exists for the given day and time slot.",
         )
 
 
@@ -51,5 +51,5 @@ class DuplicateAlternateTimeTableEntryTestCase(TestCase):
         self.assertEqual(exception.error_code, self.error_code)
         self.assertEqual(
             str(exception),
-            f"An alternate timetable already exists for the given date range. (code: {self.error_code})",
+            "An alternate timetable already exists for the given date range.",
         )

@@ -34,7 +34,7 @@ class DateOrderViolationTestCase(TestCase):
         self.assertEqual(exception.error_code, self.error_code)
         self.assertEqual(
             str(exception),
-            f"Given date {self.input_date} is less than the reference date. (code: {self.error_code})",
+            f"Given date {self.input_date} is less than the reference date.",
         )
 
     def test_without_input_date(self):

@@ -23,16 +23,14 @@ class CustomErrorTestCase(TestCase):
         custom_message = "Custom error message"
         custom_error = CustomError(error_code, error_message=custom_message)
 
-        expected_string = f"{custom_message} (code: {error_code})"
+        expected_string = custom_message
         self.assertEqual(str(custom_error), expected_string)
 
     def test_default_string_representation(self):
         error_code = "TEST_CODE"
         custom_error = CustomError(error_code)
 
-        expected_string = (
-            f"An error occurred with code {error_code} (code: {error_code})"
-        )
+        expected_string = f"An error occurred with code {error_code}"
         self.assertEqual(str(custom_error), expected_string)
 
     def test_default_error_message_without_code(self):
@@ -46,5 +44,5 @@ class CustomErrorTestCase(TestCase):
         # Test case where error code is not provided
         custom_error = CustomError(None)
 
-        expected_string = "An error occurred with code None (code: None)"
+        expected_string = "An error occurred with code None"
         self.assertEqual(str(custom_error), expected_string)

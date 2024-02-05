@@ -25,5 +25,5 @@ class LeaveRequestUpdateDeniedErrorTestCase(TestCase):
         self.assertEqual(exception.error_code, self.error_code)
         self.assertEqual(
             str(exception),
-            f"Leave request cannot be updated by the current user. (code: {self.error_code})",
+            "Leave request cannot be updated by the current user.",
         )

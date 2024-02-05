@@ -34,7 +34,7 @@ class StudentTestCase(TestCase):
 
         self.assertEqual(
             str(context.exception),
-            "'course_completion_date' cannot be greater than the 'enrolled_date' (code: date_order_violation)",
+            "'course_completion_date' cannot be greater than the 'enrolled_date'",
         )
 
     def test_discontinued_date_not_less_than_enrolled_date(self):
@@ -48,7 +48,7 @@ class StudentTestCase(TestCase):
             )
         self.assertEqual(
             str(context.exception),
-            "'discontinued_date' cannot be greater than the 'enrolled_date' (code: date_order_violation)",
+            "'discontinued_date' cannot be greater than the 'enrolled_date'",
         )
 
     def test_dismised_date_not_less_than_enrolled_date(self):
@@ -62,5 +62,5 @@ class StudentTestCase(TestCase):
             )
         self.assertEqual(
             str(context.exception),
-            "'dismissed_date' cannot be greater than the 'enrolled_date' (code: date_order_violation)",
+            "'dismissed_date' cannot be greater than the 'enrolled_date'",
         )

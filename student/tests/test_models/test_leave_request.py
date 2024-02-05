@@ -27,5 +27,5 @@ class LeaveRequestTestCase(TestCase):
             LeaveRequestFactory(from_date="2021-01-06", to_date="2021-01-01")
         self.assertEqual(
             str(cm.exception),
-            "'to_date' cannot be greater than 'from_date' (code: date_order_violation)",
+            "'to_date' cannot be greater than 'from_date'",
         )

@@ -26,8 +26,7 @@ class AlternateTimeTableTestCase(TestCase):
             )
         self.assertEqual(
             str(cm.exception),
-            f"Given date {self.alternate_timetable.end_date} is less than the reference date."
-            " (code: date_order_violation)",
+            f"Given date {self.alternate_timetable.end_date} is less than the reference date.",
         )
 
     def test_duplicate_alternate_timetable_entry(self):
@@ -40,6 +39,5 @@ class AlternateTimeTableTestCase(TestCase):
             )
         self.assertEqual(
             str(cm.exception),
-            "An alternate timetable already exists for the given date range."
-            " (code: duplicate_alternate_timetable_entry)",
+            "An alternate timetable already exists for the given date range.",
         )

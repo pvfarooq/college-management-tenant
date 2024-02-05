@@ -17,7 +17,7 @@ class PaymentFieldRequiredTests(TestCase):
         payment_mode = PaymentMode.CASH
         payment_field_required = PaymentFieldRequired(payment_mode)
 
-        expected_message = "A required field is missing for the given payment mode. (code: payment_field_required)"
+        expected_message = "A required field is missing for the given payment mode."
         self.assertEqual(str(payment_field_required), expected_message)
 
     def test_payment_field_required_custom_message(self):
@@ -25,5 +25,5 @@ class PaymentFieldRequiredTests(TestCase):
         error_detail = "Missing field: example_field"
         payment_field_required = PaymentFieldRequired(payment_mode, error_detail)
 
-        expected_message = error_detail + " (code: payment_field_required)"
+        expected_message = error_detail
         self.assertEqual(str(payment_field_required), expected_message)

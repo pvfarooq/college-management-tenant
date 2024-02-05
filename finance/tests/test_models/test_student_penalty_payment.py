@@ -27,7 +27,7 @@ class StudentPenaltyTestCase(TestCase):
             )
         self.assertEqual(
             str(context.exception),
-            "Reference number is required for challan payments. (code: payment_field_required)",
+            "Reference number is required for challan payments.",
         )
 
     def test_txn_id_is_required_for_electronic_payment_mode(self):
@@ -37,7 +37,7 @@ class StudentPenaltyTestCase(TestCase):
             )
         self.assertEqual(
             str(context.exception),
-            "Transaction ID is required for electronic payments. (code: payment_field_required)",
+            "Transaction ID is required for electronic payments.",
         )
 
     def test_reference_number_is_not_required_for_electronic_payment_mode(self):
