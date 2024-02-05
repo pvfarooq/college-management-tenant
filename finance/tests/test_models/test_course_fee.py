@@ -20,7 +20,7 @@ class CourseFeeTestCase(TestCase):
             CourseFeeFactory(valid_from=date(2021, 1, 1), valid_to=date(2020, 1, 31))
             self.assertEqual(
                 str(context.exception),
-                "'valid_from' date cannot be greater than 'valid_to' date. (code: date_order_violation)",
+                "'valid_from' date cannot be greater than 'valid_to' date.",
             )
 
     def test_is_active_is_false_post_valid_to_date(self):

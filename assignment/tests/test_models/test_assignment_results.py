@@ -28,7 +28,7 @@ class AssignmentResultTestCase(TestCase):
 
         self.assertEqual(
             str(cm.exception),
-            "Submitted date cannot be in the future (code: date_order_violation)",
+            "Submitted date cannot be in the future",
         )
 
     def test_validate_unique_assignment_result(self):

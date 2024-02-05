@@ -21,5 +21,5 @@ class AssignmentTestCase(TestCase):
 
         self.assertEqual(
             str(cm.exception),
-            "Due date cannot be in the past (code: date_order_violation)",
+            "Due date cannot be in the past",
         )

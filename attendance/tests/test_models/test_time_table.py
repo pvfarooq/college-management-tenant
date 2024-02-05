@@ -28,5 +28,5 @@ class TimeTableTestCase(TestCase):
             )
         self.assertEqual(
             str(cm.exception),
-            "A timetable already exists for the given day and time slot. (code: duplicate_timetable_entry)",
+            "A timetable already exists for the given day and time slot.",
         )

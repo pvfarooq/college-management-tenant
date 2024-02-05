@@ -8,4 +8,4 @@ class CustomError(Exception):
         return f"An error occurred with code {self.error_code}"
 
     def __str__(self):
-        return f"{self.error_message} (code: {self.error_code})"
+        return f"{self.error_message}"

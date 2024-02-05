@@ -23,7 +23,7 @@ class ExamTestCase(TestCase):
 
         self.assertEqual(
             str(cm.exception),
-            "Start time cannot be greater than end time (code: time_order_violation)",
+            "Start time cannot be greater than end time",
         )
 
     def test_unique_exam(self):
@@ -42,7 +42,6 @@ class ExamTestCase(TestCase):
             (
                 f"An exam for {self.exam.subject} already exists "
                 f"for the semester {self.exam.semester} of batch {self.exam.batch} on "
-                f"{self.exam.exam_date} from {self.exam.start_time} to {self.exam.end_time}. "
-                f"(code: duplicate_exam_entry)"
+                f"{self.exam.exam_date} from {self.exam.start_time} to {self.exam.end_time}."
             ),
         )
