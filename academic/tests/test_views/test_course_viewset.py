@@ -88,7 +88,8 @@ class CollegeAdminCourseViewSetTestCase(APITestCase):
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(response.data["results"][0]["title"], self.course.title)
         self.assertEqual(
-            response.data["results"][0]["department"], self.course.department.title
+            response.data["results"][0]["department"]["title"],
+            self.course.department.title,
         )
 
     def test_college_admin_create_course(self):
@@ -109,7 +110,9 @@ class CollegeAdminCourseViewSetTestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], self.course.title)
-        self.assertEqual(response.data["department"], self.course.department.title)
+        self.assertEqual(
+            response.data["department"]["title"], self.course.department.title
+        )
 
     def test_college_admin_update_course(self):
         url = reverse("course-detail", kwargs={"pk": self.course.pk})
@@ -150,7 +153,8 @@ class CourseViewSetDjangoFilterBackendTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 2)
         self.assertEqual(
-            response.data["results"][0]["department"], self.course.department.title
+            response.data["results"][0]["department"]["title"],
+            self.course.department.title,
         )
 
     def test_filter_course_by_autopromotion(self):

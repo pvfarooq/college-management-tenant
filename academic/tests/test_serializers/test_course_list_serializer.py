@@ -16,7 +16,11 @@ class CourseListSerializerTest(TestCase):
             serializer.data,
             {
                 "id": str(self.course.id),
-                "department": self.course.department.title,
+                "department": {
+                    "id": str(self.course.department.id),
+                    "title": self.course.department.title,
+                    "code": self.course.department.code,
+                },
                 "title": self.course.title,
                 "code": self.course.code,
                 "duration": self.course.duration,

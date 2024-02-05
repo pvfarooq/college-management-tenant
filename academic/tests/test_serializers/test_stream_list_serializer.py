@@ -18,6 +18,9 @@ class StreamListSerializerTestCase(TestCase):
                 "id": str(self.stream.id),
                 "title": self.stream.title,
                 "code": self.stream.code,
-                "course": self.stream.course.title,
+                "course": {
+                    "id": str(self.stream.course.id),
+                    "title": self.stream.course.title,
+                },
             },
         )

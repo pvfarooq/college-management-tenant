@@ -20,7 +20,13 @@ class CourseSerializer(BaseCourseSerializer):
 
 
 class CourseListSerializer(BaseCourseSerializer):
-    department = serializers.StringRelatedField()
+    department = DepartmentSerializer(read_only=True)
+
+
+class CourseShortInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ["id", "title"]
 
 
 class BaseStreamSerializer(serializers.ModelSerializer):
@@ -34,7 +40,13 @@ class StreamSerializer(BaseStreamSerializer):
 
 
 class StreamListSerializer(BaseStreamSerializer):
-    course = serializers.StringRelatedField()
+    course = CourseShortInfoSerializer(read_only=True)
+
+
+class StreamShortInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stream
+        fields = ["id", "title"]
 
 
 class BaseSubjectSerializer(serializers.ModelSerializer):
@@ -48,5 +60,5 @@ class SubjectSerializer(BaseSubjectSerializer):
 
 
 class SubjectListSerializer(BaseSubjectSerializer):
-    course = serializers.StringRelatedField()
-    stream = serializers.StringRelatedField()
+    course = CourseShortInfoSerializer(read_only=True)
+    stream = StreamShortInfoSerializer(read_only=True)

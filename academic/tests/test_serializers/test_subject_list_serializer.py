@@ -18,8 +18,14 @@ class SubjectListSerializerTestCase(TestCase):
                 "id": str(self.subject.id),
                 "title": self.subject.title,
                 "code": self.subject.code,
-                "course": self.subject.course.title,
-                "stream": self.subject.stream.title,
+                "course": {
+                    "id": str(self.subject.course.id),
+                    "title": self.subject.course.title,
+                },
+                "stream": {
+                    "id": str(self.subject.stream.id),
+                    "title": self.subject.stream.title,
+                },
                 "semester": self.subject.semester,
                 "credit": self.subject.credit,
                 "is_elective": self.subject.is_elective,

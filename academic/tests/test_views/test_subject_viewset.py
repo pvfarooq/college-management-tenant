@@ -33,8 +33,9 @@ class UserSubjectViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], self.subject.title)
         self.assertEqual(response.data["code"], str(self.subject.code))
-        self.assertEqual(response.data["course"], self.subject.course.title)
         self.assertEqual(response.data["is_common"], self.subject.is_common)
+        self.assertEqual(response.data["course"]["id"], str(self.subject.course.pk))
+        self.assertEqual(response.data["course"]["title"], self.subject.course.title)
 
     def test_user_create_subject(self):
         url = reverse("subject-list")
@@ -94,8 +95,9 @@ class CollegeAdminSubjectViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], self.subject.title)
         self.assertEqual(response.data["code"], str(self.subject.code))
-        self.assertEqual(response.data["course"], self.subject.course.title)
         self.assertEqual(response.data["is_common"], self.subject.is_common)
+        self.assertEqual(response.data["course"]["id"], str(self.subject.course.pk))
+        self.assertEqual(response.data["course"]["title"], self.subject.course.title)
 
     def test_collegeadmin_create_subject(self):
         url = reverse("subject-list")
@@ -148,7 +150,10 @@ class SubjectViewSetDjangoFilterBackendTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 1)
         self.assertEqual(
-            response.data["results"][0]["course"], self.subject.course.title
+            response.data["results"][0]["course"]["id"], str(self.subject.course.pk)
+        )
+        self.assertEqual(
+            response.data["results"][0]["course"]["title"], self.subject.course.title
         )
 
     def test_subject_filter_by_stream(self):
@@ -156,10 +161,16 @@ class SubjectViewSetDjangoFilterBackendTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 2)
         self.assertEqual(
-            response.data["results"][0]["stream"], self.subject2.stream.title
+            response.data["results"][0]["stream"]["id"], str(self.subject2.stream.pk)
         )
         self.assertEqual(
-            response.data["results"][1]["stream"], self.subject3.stream.title
+            response.data["results"][0]["stream"]["title"], self.subject2.stream.title
+        )
+        self.assertEqual(
+            response.data["results"][1]["stream"]["id"], str(self.subject3.stream.pk)
+        )
+        self.assertEqual(
+            response.data["results"][1]["stream"]["title"], self.subject3.stream.title
         )
 
     def test_subject_filter_by_is_common(self):
