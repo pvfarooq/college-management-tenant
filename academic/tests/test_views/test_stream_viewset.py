@@ -29,7 +29,7 @@ class UserStreamViewSetTestCase(APITestCase):
         self.assertEqual(response.data["results"][0]["title"], self.stream.title)
         self.assertEqual(response.data["results"][0]["code"], self.stream.code)
         self.assertEqual(
-            response.data["results"][0]["course"], self.stream.course.title
+            response.data["results"][0]["course"]["title"], self.stream.course.title
         )
 
     def test_user_create_stream(self):
@@ -52,7 +52,8 @@ class UserStreamViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], self.stream.title)
         self.assertEqual(response.data["code"], self.stream.code)
-        self.assertEqual(response.data["course"], self.stream.course.title)
+        self.assertEqual(response.data["course"]["id"], str(self.stream.course.pk))
+        self.assertEqual(response.data["course"]["title"], self.stream.course.title)
 
     def test_user_update_stream(self):
         url = reverse("stream-detail", kwargs={"pk": self.stream.pk})
@@ -92,7 +93,10 @@ class CollegeAdminStreamViewSetTestCase(APITestCase):
         self.assertEqual(response.data["results"][0]["title"], self.stream.title)
         self.assertEqual(response.data["results"][0]["code"], self.stream.code)
         self.assertEqual(
-            response.data["results"][0]["course"], self.stream.course.title
+            response.data["results"][0]["course"]["id"], str(self.stream.course.pk)
+        )
+        self.assertEqual(
+            response.data["results"][0]["course"]["title"], self.stream.course.title
         )
 
     def test_college_admin_create_stream(self):
@@ -114,7 +118,8 @@ class CollegeAdminStreamViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], self.stream.title)
         self.assertEqual(response.data["code"], self.stream.code)
-        self.assertEqual(response.data["course"], self.stream.course.title)
+        self.assertEqual(response.data["course"]["id"], str(self.stream.course.pk))
+        self.assertEqual(response.data["course"]["title"], self.stream.course.title)
 
     def test_college_admin_update_stream(self):
         url = reverse("stream-detail", kwargs={"pk": self.stream.pk})
@@ -151,5 +156,15 @@ class StreamViewSetDjangoFilterBackendTestCase(APITestCase):
         response = self.client.get(self.list_url, {"course": self.course.pk})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 2)
-        self.assertEqual(response.data["results"][0]["course"], self.course.title)
-        self.assertEqual(response.data["results"][1]["course"], self.course.title)
+        self.assertEqual(
+            response.data["results"][0]["course"]["id"], str(self.course.pk)
+        )
+        self.assertEqual(
+            response.data["results"][0]["course"]["title"], self.course.title
+        )
+        self.assertEqual(
+            response.data["results"][1]["course"]["id"], str(self.course.pk)
+        )
+        self.assertEqual(
+            response.data["results"][1]["course"]["title"], self.course.title
+        )

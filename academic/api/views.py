@@ -32,7 +32,7 @@ class DepartmentViewSet(ModelViewSet):
 
 
 class CourseViewSet(ModelViewSet):
-    queryset = Course.objects.all().order_by("title")
+    queryset = Course.objects.all().select_related("department").order_by("title")
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ["department", "auto_promotion"]
     search_fields = ["title", "code"]
@@ -51,7 +51,7 @@ class CourseViewSet(ModelViewSet):
 
 
 class StreamViewSet(ModelViewSet):
-    queryset = Stream.objects.all().order_by("title")
+    queryset = Stream.objects.all().select_related("course").order_by("title")
     filterset_fields = ["course"]
 
     def get_permissions(self):
@@ -68,7 +68,9 @@ class StreamViewSet(ModelViewSet):
 
 
 class SubjectViewSet(ModelViewSet):
-    queryset = Subject.objects.all().order_by("title")
+    queryset = (
+        Subject.objects.all().select_related("course", "stream").order_by("title")
+    )
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ["course", "stream", "is_common", "is_elective", "is_lab"]
     search_fields = ["title", "code"]
