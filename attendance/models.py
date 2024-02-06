@@ -75,6 +75,9 @@ class TimeTable(BaseModel):
                 name="unique_timetable",
             )
         ]
+        indexes = [
+            models.Index(fields=["batch", "semester"], name="batch_semester_index")
+        ]
 
     def save(self, *args, **kwargs):
         self.validate_unique_timetable_entry()
