@@ -128,6 +128,9 @@ class AlternateTimeTable(BaseModel):
                 name="unique_faculty_alternate_timetable",
             )
         ]
+        indexes = [
+            models.Index(fields=["batch", "semester"], name="alt_tt_batch_semester_idx")
+        ]
 
     def save(self, *args, **kwargs):
         self.validate_unique_alternate_timetable()
