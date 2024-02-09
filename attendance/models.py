@@ -182,6 +182,11 @@ class Attendance(BaseModel):
                 fields=["time_slot", "student", "date"], name="unique_attendance"
             )
         ]
+        indexes = [
+            models.Index(
+                fields=["batch", "semester"], name="attendance_batch_semester_idx"
+            )
+        ]
 
     def save(self, *args, **kwargs):
         self.validate_unique_attendance()
