@@ -11,3 +11,24 @@ class IsCollegeAdminOrReadOnly(BasePermission):
         return request.user.is_authenticated and (
             request.user.is_college_admin or request.method in SAFE_METHODS
         )
+
+
+class IsFaculty(BasePermission):
+    """
+    If the user is a faculty, allow all actions. Otherwise, deny all actions.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.is_faculty
+
+    def has_object_permission(self, request, view, obj):
+        return obj.faculty == request.user.faculty
+
+
+class IsTutor(IsFaculty):
+    """
+    If the user is a class tutor, allow all actions. Otherwise, deny all actions.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.is_tutor
