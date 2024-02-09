@@ -42,3 +42,11 @@ class SuperUserFactory(UserFactory):
 class CollegeAdminFactory(UserFactory):
     is_college_admin = True
     is_staff = True
+
+
+class FacultyUserFactory(UserFactory):
+    is_faculty = True
+
+
+class StudentUserFactory(UserFactory):
+    is_student = True

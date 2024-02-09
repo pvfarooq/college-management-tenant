@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import AlternateTimeTable, TimeSlot, TimeTable
+from ..models import AlternateTimeTable, Attendance, TimeSlot, TimeTable
 
 
 class TimeSlotSerializer(serializers.ModelSerializer):
@@ -44,4 +44,22 @@ class AlternateTimeTableListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AlternateTimeTable
+        exclude = ["created_at", "updated_at"]
+
+
+class AttendanceSerializer(serializers.ModelSerializer):
+    faculty = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Attendance
+        exclude = ["created_at", "updated_at"]
+
+
+class AttendanceListSerializer(serializers.ModelSerializer):
+    student = serializers.CharField(source="student.name", read_only=True)
+    faculty = serializers.CharField(source="faculty.user.get_full_name", read_only=True)
+    time_slot = TimeSlotSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Attendance
         exclude = ["created_at", "updated_at"]
