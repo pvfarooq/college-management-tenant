@@ -12,3 +12,4 @@ class CollegeSettingsFactory(factory.django.DjangoModelFactory):
         "random_element", elements=[e.value for e in AttendanceMode]
     )
     max_course_change_window_days = factory.Faker("pyint", min_value=1, max_value=30)
+    max_attendance_change_window_days = factory.Faker("pyint", min_value=1, max_value=7)

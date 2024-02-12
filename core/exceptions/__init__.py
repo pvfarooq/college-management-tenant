@@ -1,3 +1,4 @@
+from .attendance_edit_window_closed import AttendanceEditWindowClosed  # noqa
 from .base import CustomError  # noqa
 from .college_settings_exists import CollegeSettingsAlreadyExists  # noqa
 from .date_order_violation import DateOrderViolationError  # noqa

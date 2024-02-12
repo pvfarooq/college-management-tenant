@@ -40,6 +40,9 @@ class Holiday(BaseModel):
 class CollegeSettings(BaseModel):
     attendance_mode = models.CharField(max_length=20, choices=AttendanceMode.choices())
     max_course_change_window_days = models.PositiveIntegerField()
+    max_attendance_change_window_days = models.PositiveIntegerField(
+        help_text="Maximum days allowed to change attendance after adding it."
+    )
 
     _singleton = models.BooleanField(
         default=True,
