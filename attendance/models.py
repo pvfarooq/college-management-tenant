@@ -1,7 +1,9 @@
 from django.db import models
+from django.utils import timezone
 
 from core.enums import Days
 from core.exceptions import (
+    AttendanceEditWindowClosed,
     DateOrderViolationError,
     DuplicateAlternateTimeTableEntry,
     DuplicateAttendanceEntry,
@@ -9,7 +11,7 @@ from core.exceptions import (
     TimeOrderViolationError,
 )
 from core.fields import BatchYearField, SemesterField
-from core.models import BaseModel
+from core.models import BaseModel, CollegeSettings
 
 
 class TimeSlot(BaseModel):
@@ -179,7 +181,8 @@ class Attendance(BaseModel):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["time_slot", "student", "date"], name="unique_attendance"
+                fields=["time_slot", "student", "date", "semester", "batch"],
+                name="unique_attendance",
             )
         ]
         indexes = [
@@ -190,6 +193,8 @@ class Attendance(BaseModel):
 
     def save(self, *args, **kwargs):
         self.validate_unique_attendance()
+        if not self._state.adding:
+            self.check_edit_window_closed()
         super().save(*args, **kwargs)
 
     def validate_unique_attendance(self):
@@ -198,7 +203,11 @@ class Attendance(BaseModel):
         """
         attendance_count = (
             Attendance.objects.filter(
-                time_slot=self.time_slot, student=self.student, date=self.date
+                time_slot=self.time_slot,
+                student=self.student,
+                date=self.date,
+                semester=self.semester,
+                batch=self.batch,
             )
             .exclude(pk=self.pk)
             .count()
@@ -206,3 +215,18 @@ class Attendance(BaseModel):
 
         if attendance_count > 0:
             raise DuplicateAttendanceEntry()
+
+    def check_edit_window_closed(self):
+        """
+        Validates that the attendance edit window is not closed.
+        """
+        college_settings = CollegeSettings.objects.first()
+        if not college_settings:
+            return
+
+        current_date = timezone.now().date()
+        window_end_date = self.created_at.date() + timezone.timedelta(
+            days=college_settings.max_attendance_change_window_days
+        )
+        if current_date > window_end_date:
+            raise AttendanceEditWindowClosed()
