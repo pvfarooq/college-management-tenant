@@ -37,14 +37,17 @@ class Tutor(BaseModel):
     course = models.ForeignKey(
         "academic.Course",
         on_delete=models.CASCADE,
+        related_name="course_tutor",
     )
     stream = models.ForeignKey(
         "academic.Stream",
         on_delete=models.CASCADE,
         blank=True,
         null=True,
+        related_name="stream_tutor",
     )
     batch = BatchYearField()
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.faculty.user.get_full_name()
