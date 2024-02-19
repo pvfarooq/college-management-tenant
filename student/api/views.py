@@ -19,9 +19,12 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
         return LeaveRequestSerializer
 
     def get_queryset(self):
-        return LeaveRequest.objects.select_related(
-            "student", "tutor__faculty__user"
-        ).filter(student=self.request.user.student)
+        return (
+            LeaveRequest.objects.select_related("student", "tutor__faculty__user")
+            .filter(student=self.request.user.student)
+            .order_by("-created_at")
+            .order_by("-updated_at")
+        )
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
