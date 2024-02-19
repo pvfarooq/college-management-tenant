@@ -105,14 +105,16 @@ class LeaveRequest(BaseModel):
     def validate_dates(self):
         """Validates the leave request dates"""
 
-        if self.from_date > self.to_date:
+        from_date = self.__parse_date(self.from_date)
+        to_date = self.__parse_date(self.to_date)
+
+        if from_date > to_date:
             raise DateOrderViolationError(
                 input_date=self.to_date,
                 error_detail="'from_date' cannot be greater than 'to_date'",
             )
 
-        parsed_from_date = self.__parse_date(self.from_date)
-        if parsed_from_date < timezone.now().date():
+        if from_date < timezone.now().date():
             raise DateOrderViolationError(
                 input_date=self.from_date,
                 error_detail="You cannot request leave for past dates",

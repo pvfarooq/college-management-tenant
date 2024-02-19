@@ -32,3 +32,15 @@ class IsTutor(IsFaculty):
 
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.is_tutor
+
+
+class IsStudent(BasePermission):
+    """
+    If the user is a student, allow all actions. Otherwise, deny all actions.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.is_student
+
+    def has_object_permission(self, request, view, obj):
+        return obj.student == request.user.student
