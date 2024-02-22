@@ -8,4 +8,5 @@ urlpatterns = [
     path("users/", include("user.urls")),
     path("attendance/", include("attendance.urls")),
     path("academic/", include("academic.urls")),
+    path("student/", include("student.urls")),
 ] + swagger_urlpatterns

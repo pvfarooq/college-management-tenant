@@ -54,7 +54,9 @@ db.volume.delete:
 
 .PHONY: code.format
 code.format:
-	black . && isort . && flake8 .
+	@echo "Running code linters and formatters..."
+	docker compose run --rm django sh -c "black . && isort . && flake8 ."
+
 
 .PHONY: django.test
 django.test:

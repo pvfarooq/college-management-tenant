@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from academic.models import Course, Department, Stream
 from core.exceptions import DateOrderViolationError
@@ -81,7 +82,7 @@ class LeaveRequest(BaseModel):
     status = models.CharField(
         max_length=15,
         choices=LeaveRequestStatus.choices(),
-        default=LeaveRequestStatus.PENDING,
+        default=LeaveRequestStatus.PENDING.value,
     )
 
     def __str__(self):
@@ -104,8 +105,24 @@ class LeaveRequest(BaseModel):
     def validate_dates(self):
         """Validates the leave request dates"""
 
-        if self.from_date > self.to_date:
+        from_date = self.__parse_date(self.from_date)
+        to_date = self.__parse_date(self.to_date)
+
+        if from_date > to_date:
             raise DateOrderViolationError(
                 input_date=self.to_date,
-                error_detail="'to_date' cannot be greater than 'from_date'",
+                error_detail="'from_date' cannot be greater than 'to_date'",
             )
+
+        if from_date < timezone.now().date():
+            raise DateOrderViolationError(
+                input_date=self.from_date,
+                error_detail="You cannot request leave for past dates",
+            )
+
+    def __parse_date(self, date_str: str) -> timezone.datetime.date:
+        """Parses the date string to date object"""
+        if isinstance(date_str, str):
+            return timezone.datetime.strptime(date_str, "%Y-%m-%d").date()
+        else:
+            return date_str

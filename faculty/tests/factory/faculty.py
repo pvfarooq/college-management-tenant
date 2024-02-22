@@ -2,7 +2,7 @@ import factory
 
 from academic.tests.factory import DepartmentFactory
 from faculty.models import Faculty
-from user.tests.factory import UserFactory
+from user.tests.factory import FacultyUserFactory
 
 from .faculty_role import FacultyRoleFactory
 
@@ -11,7 +11,7 @@ class FacultyFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Faculty
 
-    user = factory.SubFactory(UserFactory)
+    user = factory.SubFactory(FacultyUserFactory)
     department = factory.SubFactory(DepartmentFactory)
     faculty_code = factory.Faker("uuid4")
     joining_date = factory.Faker("past_date")

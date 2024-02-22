@@ -5,7 +5,7 @@ from factory.fuzzy import FuzzyInteger
 from academic.tests.factory import CourseFactory, DepartmentFactory, StreamFactory
 from student.enums import CourseStatus
 from student.models import Student
-from user.tests.factory import UserFactory
+from user.tests.factory import StudentUserFactory
 
 
 class StudentFactory(factory.django.DjangoModelFactory):
@@ -14,7 +14,7 @@ class StudentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Student
 
-    user = factory.SubFactory(UserFactory)
+    user = factory.SubFactory(StudentUserFactory)
     name = factory.Faker("name")
     admission_num = factory.Sequence(lambda n: n + 1)
     batch = FuzzyInteger(1980, timezone.now().year + 1)

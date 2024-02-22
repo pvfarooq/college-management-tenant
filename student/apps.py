@@ -7,3 +7,4 @@ class StudentConfig(AppConfig):
 
     def ready(self):
         import student.signals.admission_num  # noqa: F401
+        import student.signals.pre_leave_request_delete  # noqa: F401
