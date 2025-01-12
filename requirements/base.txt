@@ -8,3 +8,4 @@ argon2-cffi==23.1.0
 ipython==8.23.0
 drf-yasg==1.21.7
 django-filter==23.5
+setuptools
