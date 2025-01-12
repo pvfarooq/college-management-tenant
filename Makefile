@@ -8,8 +8,6 @@ help:
 	@echo "  db.migration.migrate - Create django migrations and migrate to database"
 	@echo "  db.migration.clean   - Remove all django migrations (Dangerous!)"
 	@echo "  db.volume.delete     - Delete database volume"
-	@echo "  docker.image.build   - Build docker image"
-	@echo "  docker.image.push    - Push docker image to registry"
 	@echo "  code.format          - Format code using black, isort and flake8"
 	@echo "  git.prune.deleted    - Delete local branches that have been deleted on remote"
 
@@ -18,15 +16,6 @@ help:
 docker.image.build:
 	docker compose down
 	docker build -t clg_mgmt_tenant-django:1.0 .
-	docker tag clg_mgmt_tenant-django:1.0 ghcr.io/pvfarooq/college-management-tenant/clg_mgmt_tenant-django:1.0
-
-.PHONY: docker.image.push
-docker.image.push:
-	docker push ghcr.io/pvfarooq/college-management-tenant/clg_mgmt_tenant-django:1.0
-
-.PHONY: github.docker.login
-github.docker.login:
-	docker login ghcr.io -u pvfarooq
 
 
 .PHONY: db.migration.migrate
