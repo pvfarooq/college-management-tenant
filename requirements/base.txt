@@ -1,6 +1,6 @@
 Django==5.0.11
 djangorestframework==3.14.0
-djangorestframework-simplejwt[crypto]==5.3.1
+djangorestframework-simplejwt[crypto]==5.4.0
 psycopg2==2.9.9
 factory-boy==3.3.0
 django-cors-headers==4.3.1
